@@ -56,14 +56,19 @@ try:
         # Filter to players who played in week 8
         merged = merged[merged['week8_snaps'] > 0]
 
-        # Top 5
-        top_5 = merged.nlargest(5, 'snap_increase').reset_index(drop=True)
+        # Exclude offensive linemen
+        ol_positions = ['C', 'G', 'T', 'OL', 'OT', 'OG', 'LG', 'RG', 'RT', 'LT']
+        merged = merged[~merged['position'].isin(ol_positions)]
+
+        # Top 20
+        top_20 = merged.nlargest(20, 'snap_increase').reset_index(drop=True)
 
         print("\n" + "="*80)
-        print("TOP 5 PLAYERS BY SNAP COUNT INCREASE (Week 7 → Week 8, 2025 NFL Season)")
+        print("TOP 20 PLAYERS BY SNAP COUNT INCREASE (Week 7 → Week 8, 2025 NFL Season)")
+        print("(Excluding Offensive Linemen)")
         print("="*80)
 
-        for idx, row in top_5.iterrows():
+        for idx, row in top_20.iterrows():
             print(f"\n{idx + 1}. {row['player']} - {row['position']} ({row['team']})")
             print(f"   Week 7: {int(row['week7_snaps'])} snaps")
             print(f"   Week 8: {int(row['week8_snaps'])} snaps")
@@ -72,7 +77,7 @@ try:
         print("\n" + "="*80)
 
         # Save
-        top_5.to_csv('real_snap_count_increase_week7_to_week8.csv', index=False)
+        top_20.to_csv('real_snap_count_increase_week7_to_week8.csv', index=False)
         print("\n✅ Results saved to: real_snap_count_increase_week7_to_week8.csv")
 
 except Exception as e:
