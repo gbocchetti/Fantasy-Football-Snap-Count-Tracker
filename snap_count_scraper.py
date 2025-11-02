@@ -175,10 +175,9 @@ def main():
     print("Fantasy Football Snap Count Tracker")
     print("="*40)
 
-    # Try to get recent weeks - let's try 2024 season weeks 8 and 9
-    # You can adjust these based on the current NFL week
-    year = 2024
-    weeks_to_fetch = [8, 9]  # Adjust these to the most recent two weeks
+    # Fetch Week 7 and Week 8 of 2025 NFL season
+    year = 2025
+    weeks_to_fetch = [7, 8]
 
     print(f"\nFetching snap count data for {year} NFL season")
     print(f"Weeks: {weeks_to_fetch}\n")
