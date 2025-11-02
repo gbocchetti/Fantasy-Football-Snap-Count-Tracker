@@ -24,14 +24,27 @@ try:
     else:
         print(f"\nRecords for weeks 7 and 8: {len(weeks_data)}")
 
+        # Determine the correct team column name
+        team_col = None
+        for possible_col in ['team', 'tm', 'recent_team', 'opponent']:
+            if possible_col in weeks_data.columns:
+                team_col = possible_col
+                print(f"Using team column: '{team_col}'")
+                break
+
+        if team_col is None:
+            print("ERROR: Could not find team column. Available columns:")
+            print(weeks_data.columns.tolist())
+            raise ValueError("No team column found")
+
         # Week 7 data
         week7 = weeks_data[weeks_data['week'] == 7].copy()
-        week7_snaps = week7.groupby(['player', 'pfr_player_id', 'position', 'recent_team'])['offense_snaps'].sum().reset_index()
+        week7_snaps = week7.groupby(['player', 'pfr_player_id', 'position', team_col])['offense_snaps'].sum().reset_index()
         week7_snaps.columns = ['player', 'pfr_player_id', 'position', 'team', 'week7_snaps']
 
         # Week 8 data
         week8 = weeks_data[weeks_data['week'] == 8].copy()
-        week8_snaps = week8.groupby(['player', 'pfr_player_id', 'position', 'recent_team'])['offense_snaps'].sum().reset_index()
+        week8_snaps = week8.groupby(['player', 'pfr_player_id', 'position', team_col])['offense_snaps'].sum().reset_index()
         week8_snaps.columns = ['player', 'pfr_player_id', 'position', 'team', 'week8_snaps']
 
         # Merge
