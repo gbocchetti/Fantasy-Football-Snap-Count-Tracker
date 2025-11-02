@@ -53,8 +53,8 @@ try:
         merged['week8_snaps'] = merged['week8_snaps'].fillna(0)
         merged['snap_increase'] = merged['week8_snaps'] - merged['week7_snaps']
 
-        # Filter to players who played in week 8
-        merged = merged[merged['week8_snaps'] > 0]
+        # Filter to players who played in BOTH weeks (exclude bye weeks and injuries)
+        merged = merged[(merged['week8_snaps'] > 0) & (merged['week7_snaps'] > 0)]
 
         # Exclude offensive linemen
         ol_positions = ['C', 'G', 'T', 'OL', 'OT', 'OG', 'LG', 'RG', 'RT', 'LT']
@@ -65,7 +65,7 @@ try:
 
         print("\n" + "="*80)
         print("TOP 20 PLAYERS BY SNAP COUNT INCREASE (Week 7 → Week 8, 2025 NFL Season)")
-        print("(Excluding Offensive Linemen)")
+        print("(Excluding Offensive Linemen and Bye Weeks)")
         print("="*80)
 
         for idx, row in top_20.iterrows():
